@@ -5,6 +5,8 @@ const app = express();
 const morgan = require('morgan')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
+const mongoSanitize = require('express-mongo-sanitize')
+const xss = require('xss-clean')
 const globalErrorHandler = require('./controllers/errorController')
 const tourRouter = require("./routes/tourRoutes")
 const userRouter = require("./routes/userRoutes")
@@ -22,8 +24,13 @@ const limiter = rateLimit({
 app.use('/api', limiter)
 //Use ia a middleware function. Middleware functions genrally used to modify incoming request data
 // req -> middleware -> response
-//3. body parser, read data from the body into req.body
+//body parser, read data from the body into req.body
 app.use(express.json({limit : '10kb'}))
+
+//Data sanatization against NonSQl query attacks
+app.use(mongoSanitize())
+//Data sanatization against XSS
+app.use(xss())
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
