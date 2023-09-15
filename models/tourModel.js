@@ -143,7 +143,10 @@ tourSchema.pre(/^find/, function(next){
     this.find({secretTour : {$ne : true}})
     next()
 })
-
+tourSchema.pre(/^find/, function(next){
+    this.populate({path:'guides',select:'-__v -passwordChangedAt'})
+    next()
+})
 //AGGREGATE MIDDLEWARE : It allows us to run before and after the aggregate is executed
 tourSchema.pre('aggregate',function(next){
     this.pipeline().unshift({$match:{secretTour : {$ne : true}}})
