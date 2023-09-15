@@ -14,13 +14,13 @@ const filterObj =(obj, ...allowedFeilds)=>{
 }   
 
 exports.getAllUsers = catchAsync(async(req,res,next)=>{
-    const tours = await User.find();
+    const Users = await User.find();
         //Response
         res.status(200).json({
             message : "success",
-            result:tours.length,
+            result:Users.length,
             data:{
-                tours
+                Users
             }
         })
 })
