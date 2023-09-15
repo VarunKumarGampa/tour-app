@@ -11,6 +11,7 @@ const globalErrorHandler = require('./controllers/errorController')
 const tourRouter = require("./routes/tourRoutes")
 const userRouter = require("./routes/userRoutes")
 const AppError = require("./utils/appError")
+const hpp = require('hpp')
 
 //Global Middleware
 //1. set security http header
@@ -31,6 +32,11 @@ app.use(express.json({limit : '10kb'}))
 app.use(mongoSanitize())
 //Data sanatization against XSS
 app.use(xss())
+
+//Prevent parameter pollution
+app.use(hpp({
+    whitelist : ['duration','ratingsAverage','ratingsQuantity','maxGroupSize','difficulty','price']
+}))
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
