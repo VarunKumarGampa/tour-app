@@ -10,6 +10,7 @@ const xss = require('xss-clean')
 const globalErrorHandler = require('./controllers/errorController')
 const tourRouter = require("./routes/tourRoutes")
 const userRouter = require("./routes/userRoutes")
+const reviewRoute = require("./routes/reviewRoute")
 const AppError = require("./utils/appError")
 const hpp = require('hpp')
 
@@ -48,6 +49,7 @@ app.use(express.static(`${__dirname}/public`))
 //Route
 app.use("/api/v1/tours", tourRouter)
 app.use("/api/v1/users", userRouter)
+app.use("/api/v1/reviews", reviewRoute)
 
 app.all('*', (req,res,next)=>{
     next(new AppError(`Can't find route ${req.originalUrl} on this server`, 404))
