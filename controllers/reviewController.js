@@ -3,7 +3,10 @@ const AppError = require('./../utils/appError')
 const catchAsync = require('./../utils/catchAsync')
 
 exports.getAllReviews = catchAsync(async (req,res,next)=>{
-    const reviews = await Review.find()
+    let filter = {}
+    if(req.params.tourId) filter = {tour:req.params.tourId}
+
+    const reviews = await Review.find(filter)
     //Response
     res.status(200).json({
         status :"Success",
@@ -15,7 +18,7 @@ exports.getAllReviews = catchAsync(async (req,res,next)=>{
 })
 
 exports.createReview= catchAsync(async (req,res,next)=>{
-    //allow nested route
+    //allow nested route(tours/:tourID/review)
     if(!req.body.tour) req.body.tour = req.params.tourId
     if(!req.body.user) req.body.user = req.user.id
 
