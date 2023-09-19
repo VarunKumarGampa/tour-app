@@ -56,12 +56,13 @@ active :{
 })
 
 userSchema.pre('save', async function(next){
+    //only run this if the password was modified
     if(!this.isModified('password')) return next()
 
     //hash the password with cost of 12
     this.password = await bcrypt.hash(this.password, 12)
 
-    //Delete passwordConfirm field
+    //Deleting passwordConfirm field as it is only used for validation not to persist on the database
     this.passwordConfirm = undefined
 })
 //query middleware

@@ -108,11 +108,14 @@ const tourSchema = mongoose.Schema({
             ref : 'User'
         }
     ]
-},{
+},
+//explicity define the virtual proerties to be true as json and object in output
+{
     toJSON :{ virtuals : true},
     toObject : { virtuals : true}
 })
 
+//vitual property
 tourSchema.virtual('durationWeek').get(function(){
     return this.duration / 7
 });
@@ -122,7 +125,7 @@ tourSchema.virtual('reviews',{
     foreignField:'tour',
     localField:'_id'
 })
-//DOCUMENT MIDDLEWARE : runs before save() and create() not inset() or insertMany()//
+//DOCUMENT MIDDLEWARE for pre : runs before save() and create() not inset() or insertMany()//
 
 tourSchema.pre('save', function(next){
     this.slug = slugify(this.name, {lower : true})
