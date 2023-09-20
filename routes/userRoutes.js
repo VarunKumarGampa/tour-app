@@ -28,7 +28,7 @@ router
   .delete(
     // authController.protect,
     // authController.restrictTo('admin','lead-guide'),
-    userController.deleteUsers
+    userController.deleteUser
   );
 
 module.exports = router;
