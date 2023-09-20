@@ -25,12 +25,6 @@ exports.getAllUsers = catchAsync(async(req,res,next)=>{
             }
         })
 })
-exports. createUsers = (req,res)=>{
-    res.status(500).json({
-        status: "fail",
-        message:"This route is not yet defined"
-    })
-}
 
 exports.getUsers = (req,res)=>{
     res.status(500).json({
@@ -39,13 +33,7 @@ exports.getUsers = (req,res)=>{
     })
 }
 
-exports.updateUsers = (req,res)=>{
-    res.status(500).json({
-        status: "fail",
-        message:"This route is not yet defined"
-    })
-}
-
+exports.updateUsers =factory.updateOne(User)
 exports.deleteUser = factory.deleteOne(User)
 
 
