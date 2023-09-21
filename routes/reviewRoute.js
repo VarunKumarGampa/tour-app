@@ -17,9 +17,11 @@ router
     reviewController.createReview
   );
 
+
 router
   .route('/:id')
   .delete(authController.protect, reviewController.deleteReview)
-  .patch(authController.protect, reviewController.updateReview);
+  .patch(authController.protect, reviewController.updateReview)
+  .get(authController.protect,reviewController.getReview);
 
 module.exports = router;

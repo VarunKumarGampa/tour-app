@@ -14,28 +14,15 @@ const filterObj =(obj, ...allowedFeilds)=>{
     return newObj
 }   
 
-exports.getAllUsers = catchAsync(async(req,res,next)=>{
-    const Users = await User.find();
-        //Response
-        res.status(200).json({
-            message : "success",
-            result:Users.length,
-            data:{
-                Users
-            }
-        })
-})
-
-exports.getUsers = (req,res)=>{
-    res.status(500).json({
-        status: "fail",
-        message:"This route is not yet defined"
-    })
-}
-
+exports.getAllUsers = factory.getAll(User)
+exports.getUsers = factory.getOne(User)
 exports.updateUsers =factory.updateOne(User)
 exports.deleteUser = factory.deleteOne(User)
 
+exports.getMe = (req,res,next)=>{
+    req.params.id = req.user.id
+    next()
+}
 
 exports.updateMe = catchAsync(async(req, res, next)=>{
     //1. create error if user POSTs password date
