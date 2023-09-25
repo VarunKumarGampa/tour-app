@@ -32,7 +32,7 @@ router
   );
 
 router.route('/tours-within/:distance/center/:latlng/unit/:unit').get(tourController.getTourswithin)
-router.route('/distances/:lntlng/unit/:unit').get(tourController.getdistances)
+router.route('/distances/:latlng/unit/:unit').get(tourController.getdistances)
 router
   .route('/')
   .get(tourController.getAllTour)

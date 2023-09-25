@@ -160,10 +160,10 @@ tourSchema.pre(/^find/, function(next){
     next()
 })
 //AGGREGATE MIDDLEWARE : It allows us to run before and after the aggregate is executed
-tourSchema.pre('aggregate',function(next){
-    this.pipeline().unshift({$match:{secretTour : {$ne : true}}})
-    next()
-})
+// tourSchema.pre('aggregate',function(next){
+//     this.pipeline().unshift({$match:{secretTour : {$ne : true}}})
+//     next()
+// })
 
 
 
