@@ -1,7 +1,7 @@
 const express = require("express")
 
 const app = express();
-
+const path = require('path')
 const morgan = require('morgan')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
@@ -14,6 +14,8 @@ const reviewRoute = require("./routes/reviewRoute")
 const AppError = require("./utils/appError")
 const hpp = require('hpp')
 
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname , 'views'))
 //Global Middleware
 //1. set security http header
 app.use(helmet())
@@ -47,6 +49,10 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(`${__dirname}/public`))
 
 //Route
+app.get('/',(req,res)=>{
+    res.status(200).render('base')
+})
+
 app.use("/api/v1/tours", tourRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/reviews", reviewRoute)
