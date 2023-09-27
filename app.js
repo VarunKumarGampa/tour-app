@@ -13,6 +13,7 @@ const userRouter = require("./routes/userRoutes")
 const reviewRoute = require("./routes/reviewRoute")
 const AppError = require("./utils/appError")
 const hpp = require('hpp')
+const viewRouter = require("./routes/viewRouter")
 
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname , 'views'))
@@ -49,26 +50,11 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(`${__dirname}/public`))
 
 //Route
-app.get('/',(req,res)=>{
-    res.status(200).render('base',{
-        tour : 'The Forest Hiker',
-        user : 'Varun'
-    })
-})
 
-app.get('/overview', (req,res)=>{
-    res.status(200).render('overview', {
-        title:'All Tours'
-    })
-})
-app.get('/tour', (req,res)=>{
-    res.status(200).render('tour', {
-        title:'The Forest Hiker'
-    })
-})
 app.use("/api/v1/tours", tourRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/reviews", reviewRoute)
+app.use("/",viewRouter)
 
 app.all('*', (req,res,next)=>{
     next(new AppError(`Can't find route ${req.originalUrl} on this server`, 404))
