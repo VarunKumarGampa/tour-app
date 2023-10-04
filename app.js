@@ -14,12 +14,13 @@ const reviewRoute = require("./routes/reviewRoute")
 const AppError = require("./utils/appError")
 const hpp = require('hpp')
 const viewRouter = require("./routes/viewRouter")
-
+const cookieParser = require('cookie-parser')
+const cors=require("cors");
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname , 'views'))
 //Global Middleware
 //1. set security http header
-app.use(helmet())
+// app.use(helmet())
 //2. limit request for same API
 const limiter = rateLimit({
     max : 100,
@@ -31,12 +32,18 @@ app.use('/api', limiter)
 // req -> middleware -> response
 //body parser, read data from the body into req.body
 app.use(express.json({limit : '10kb'}))
-
+app.use(cookieParser())
 //Data sanatization against NonSQl query attacks
 app.use(mongoSanitize())
 //Data sanatization against XSS
 app.use(xss())
-
+const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+ }
+ 
+ app.use(cors(corsOptions)) // Use this after the variable declaration
 //Prevent parameter pollution
 app.use(hpp({
     whitelist : ['duration','ratingsAverage','ratingsQuantity','maxGroupSize','difficulty','price']
@@ -48,6 +55,12 @@ if (process.env.NODE_ENV === 'development') {
 
 //serving static files
 app.use(express.static(`${__dirname}/public`))
+app.use( helmet({ contentSecurityPolicy: false }) );
+//Test middleware
+app.use((req,res,next)=>{
+    console.log(req.cookies)
+    next()
+})
 
 //Route
 
