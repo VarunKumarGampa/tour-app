@@ -23,16 +23,26 @@ const handleJWTError = err =>{
 const handleJWTExpiredError = err =>{
     new AppError(`Token has been expired! Please login again`,401)
 }
-const sendErrorDev = (err, res)=>{
-    res.status(err.statusCode).json({
-        status: err.status,
-        error : err,
-        message : err.message,
-        stack : err.stack
-    })
+const sendErrorDev = (req,err,res)=>{
+    //API
+    console.log(req)
+    if(req.originalUrl.startsWith('/api')){
+        res.status(err.statusCode).json({
+            status: err.status,
+            error : err,
+            message : err.message,
+            stack : err.stack
+        })
+    }else{
+        //Rendered website
+        res.status(err.statusCode).render('error',{
+            title : "somthing went wrong!",
+            msg: err.message
+        })
+    }
 }
 
-const sendErrorPROD = (err, res)=>{
+const sendErrorPROD = (err,req,res)=>{
     //Operational, trusted error : send message to client
     if(err.isOperational){
         res.status(err.statusCode).json({
@@ -57,7 +67,7 @@ module.exports = (err, req,res,next)=>{
     err.status = err.status || 'error'
 
     if(process.env.NODE_ENV === 'development'){
-        sendErrorDev(err, res)
+        sendErrorDev(req,err,res)
     }
     else if(process.env.NODE_ENV === 'production'){
         let error = {...err}
@@ -75,6 +85,6 @@ module.exports = (err, req,res,next)=>{
         if(error.name === 'TokenExpiredError'){
             error = handleJWTExpiredError(error)
         }
-        sendErrorPROD(error, res)
+        sendErrorPROD(error, res,req)
     }
 }
