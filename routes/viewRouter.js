@@ -4,8 +4,8 @@ const viewController = require('./../controllers/viewsController')
 const authController = require('./../controllers/authController')
 
 
-router.use(authController.isLoggedIn)
-router.get('/', viewController.overview)
-router.get('/tour/:slug', viewController.gettour)
-router.get('/login',viewController.getLoginForm)
+router.get('/', authController.isLoggedIn,viewController.overview)
+router.get('/tour/:slug', authController.isLoggedIn,viewController.gettour)
+router.get('/login',authController.isLoggedIn,viewController.getLoginForm)
+router.get('/me',authController.protect,viewController.getAccount)
 module.exports = router
