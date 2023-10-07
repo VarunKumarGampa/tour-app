@@ -8,4 +8,6 @@ router.get('/', authController.isLoggedIn,viewController.overview)
 router.get('/tour/:slug', authController.isLoggedIn,viewController.gettour)
 router.get('/login',authController.isLoggedIn,viewController.getLoginForm)
 router.get('/me',authController.protect,viewController.getAccount)
+
+router.post('/submit-user-data',authController.protect,viewController.updateUserData)
 module.exports = router
