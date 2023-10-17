@@ -1,7 +1,5 @@
 const express = require('express');
-const multer = require('multer')
 
-const upload = multer({dest : 'public/img/users'})
 const router = express.Router();
 
 const userController = require('./../controllers/userController');
@@ -23,7 +21,7 @@ router.patch(
 //Protects all the route after this middleware
 router.use(authController.protect)
 
-router.patch('/updateMe',upload.single('photo') ,userController.updateMe);
+router.patch('/updateMe',userController.uploadUserPhoto ,userController.updateMe);
 router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
 
