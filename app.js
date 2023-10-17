@@ -57,11 +57,11 @@ if (process.env.NODE_ENV === 'development') {
 //serving static files
 app.use(express.static(`${__dirname}/public`))
 app.use( helmet({ contentSecurityPolicy: false }) );
-//Test middleware
-app.use((req,res,next)=>{
-    console.log(req.cookies)
-    next()
-})
+// //Test middleware
+// app.use((req,res,next)=>{
+//     console.log(req.cookies)
+//     next()
+// })
 
 //Route
 
